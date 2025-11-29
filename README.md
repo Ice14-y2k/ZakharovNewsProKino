@@ -1,2 +1,451 @@
-# ZakharovNewsProKino
-Новости кино
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Захаров News - Новости о фильмах</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        a {
+            text-decoration: none;
+            color: #2c3e50;
+        }
+        
+        /* Шапка */
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        .logo span {
+            color: #e74c3c;
+        }
+        
+        .logo p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav li {
+            margin-left: 25px;
+        }
+        
+        nav a {
+            color: white;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #e74c3c;
+        }
+        
+        /* Основной контент */
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        /* Сетка новостей */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .news-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        
+        .news-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .news-header h2 {
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #7f8c8d;
+        }
+        
+        .news-category {
+            background: #e74c3c;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+        
+        .news-content {
+            padding: 20px;
+        }
+        
+        .news-preview {
+            margin-bottom: 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        
+        .news-preview.expanded {
+            max-height: 500px;
+        }
+        
+        .read-more {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+        
+        .read-more:hover {
+            background: #2980b9;
+        }
+        
+        /* Боковая панель */
+        aside {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+        
+        .sidebar-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e74c3c;
+        }
+        
+        .top-news ol {
+            padding-left: 20px;
+        }
+        
+        .top-news li {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .top-news li:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .top-news a {
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .top-news a:hover {
+            color: #e74c3c;
+        }
+        
+        /* Подвал */
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 30px 0;
+            margin-top: 40px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-content p {
+            margin-bottom: 5px;
+        }
+        
+        .contact-email {
+            color: #e74c3c;
+            font-weight: 500;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .news-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 15px;
+                justify-content: center;
+            }
+            
+            nav li {
+                margin: 0 10px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-content div:last-child {
+                margin-top: 15px;
+            }
+            
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Захаров <span>News</span></h1>
+                    <p>Новости из мира кино</p>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#">Главная</a></li>
+                        <li><a href="#">Категории</a></li>
+                        <li><a href="#">Контакты</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="container">
+        <div class="main-content">
+            <!-- Секция с новостями -->
+            <section>
+                <div class="news-grid" id="news-container">
+                    <!-- Новостные карточки будут добавлены через JavaScript -->
+                </div>
+            </section>
+
+            <!-- Боковая панель -->
+            <aside>
+                <h2 class="sidebar-title">Топ-5 популярных новостей</h2>
+                <div class="top-news">
+                    <ol>
+                        <li><a href="#">"Дюна: Часть вторая" бьет рекорды кассовых сборов</a></li>
+                        <li><a href="#">Актеры Голливуда объявили о создании собственной студии</a></li>
+                        <li><a href="#">Новый фильм Кристофера Нолана получил 11 номинаций на "Оскар"</a></li>
+                        <li><a href="#">Netflix анонсировал сериал по вселенной "Ведьмака"</a></li>
+                        <li><a href="#">Студия Marvel пересматривает планы на Кинематографическую вселенную</a></li>
+                    </ol>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Подвал сайта -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <p>&copy; 2023 Захаров News. Все права защищены.</p>
+                </div>
+                <div>
+                    <p>Контактный email: <a href="mailto:info@zakhrov-news.ru" class="contact-email">info@zakhrov-news.ru</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Данные новостей
+        const newsData = [
+            {
+                title: "Новый фильм о супергероях Marvel выходит в прокат",
+                date: "2023-11-15",
+                category: "Новинки",
+                preview: "Студия Marvel анонсировала дату выхода нового фильма о супергероях. Премьера состоится в следующем месяце, и поклонники уже с нетерпением ждут продолжения франшизы."
+            },
+            {
+                title: "Инсайды о съемках сиквела 'Аватара'",
+                date: "2023-11-14",
+                category: "Инсайды",
+                preview: "Появились новые детали о съемках долгожданного сиквела 'Аватара'. Режиссер Джеймс Кэмерон использует инновационные технологии для создания подводных сцен."
+            },
+            {
+                title: "Лучшие фильмы 2023 года по версии критиков",
+                date: "2023-11-13",
+                category: "Рейтинги",
+                preview: "Кинокритики составили список самых впечатляющих фильмов 2023 года. В топ вошли как голливудские блокбастеры, так и независимое кино."
+            },
+            {
+                title: "Актерский состав нового боевика полностью раскрыт",
+                date: "2023-11-12",
+                category: "Кастинг",
+                preview: "Стали известны все актеры, которые примут участие в съемках нового боевика от известного режиссера. В главных ролях снялись звезды мирового кино."
+            },
+            {
+                title: "Фестиваль независимого кино объявил программу",
+                date: "2023-11-11",
+                category: "Фестивали",
+                preview: "Организаторы международного фестиваля независимого кино представили полную программу мероприятий. В этом году фестиваль пройдет в гибридном формате."
+            },
+            {
+                title: "Съемки исторической драмы завершены",
+                date: "2023-11-10",
+                category: "Производство",
+                preview: "Завершились съемки масштабной исторической драмы о событиях Второй мировой войны. Режиссер отметил сложность работы над проектом."
+            },
+            {
+                title: "Новый сериал от HBO получил восторженные отзывы",
+                date: "2023-11-09",
+                category: "Сериалы",
+                preview: "Премьера нового сериала от канала HBO состоялась на прошлой неделе. Критики высоко оценили актерскую игру и режиссуру проекта."
+            },
+            {
+                title: "Анимационная студия анонсировала три новых проекта",
+                date: "2023-11-08",
+                category: "Анимация",
+                preview: "Известная анимационная студия представила планы на ближайшие три года. В разработке находятся три полнометражных мультфильма в разных жанрах."
+            },
+            {
+                title: "Интервью с режиссером нового триллера",
+                date: "2023-11-07",
+                category: "Интервью",
+                preview: "В эксклюзивном интервью нашему порталу режиссер нового психологического триллера рассказал о вдохновении и сложностях съемочного процесса."
+            },
+            {
+                title: "Технологии VR в кино: что ждать в будущем",
+                date: "2023-11-06",
+                category: "Технологии",
+                preview: "Эксперты киноиндустрии обсуждают перспективы использования технологий виртуальной реальности в кинематографе. Уже сейчас некоторые режиссеры экспериментируют с форматом."
+            }
+        ];
+
+        // Функция для создания новостных карточек
+        function createNewsCards() {
+            const newsContainer = document.getElementById('news-container');
+            
+            // Ограничиваем до 5 новостей для главной страницы
+            const newsToShow = newsData.slice(0, 5);
+            
+            newsToShow.forEach((news, index) => {
+                const newsCard = document.createElement('article');
+                newsCard.className = 'news-card';
+                
+                // Форматируем дату
+                const formattedDate = new Date(news.date).toLocaleDateString('ru-RU', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+                
+                newsCard.innerHTML = `
+                    <div class="news-header">
+                        <h2>${news.title}</h2>
+                        <div class="news-meta">
+                            <span class="news-date">${formattedDate}</span>
+                            <span class="news-category">${news.category}</span>
+                        </div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-preview" id="preview-${index}">
+                            <p>${news.preview}</p>
+                        </div>
+                        <button class="read-more" data-index="${index}">Читать далее</button>
+                    </div>
+                `;
+                
+                newsContainer.appendChild(newsCard);
+            });
+            
+            // Добавляем обработчики событий для кнопок
+            document.querySelectorAll('.read-more').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = this.getAttribute('data-index');
+                    const preview = document.getElementById(`preview-${index}`);
+                    
+                    if (preview.classList.contains('expanded')) {
+                        preview.classList.remove('expanded');
+                        this.textContent = 'Читать далее';
+                    } else {
+                        preview.classList.add('expanded');
+                        this.textContent = 'Свернуть';
+                    }
+                });
+            });
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', createNewsCards);
+    </script>
+</body>
+</html>
